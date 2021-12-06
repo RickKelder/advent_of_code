@@ -1,4 +1,6 @@
-reader = open('4_input.txt')
+import time
+
+reader = open('6_input.txt')
 lines = []
 try:
     for line in reader.readlines():
@@ -6,69 +8,25 @@ try:
 finally:
     reader.close()
 
-def getBoards():
-	boards = []
-	newBoardMatrix = []
-	for line in lines[2:]:
-		if line == "":
-			boards.append(Board(newBoardMatrix))
-			newBoardMatrix = []
-		else:
-			newBoardMatrix.extend([number for number in map(int, line.replace("  ", " ").split())])
-	boards.append(Board(newBoardMatrix))
-	return boards
+#main
+simulate_days = 256
 
-class Board:
-	def __init__(self, matrix):
-		self.matrix = matrix
-		self.marked = [0 for i in range(len(self.matrix))] 
-		self.winIndex = -1
+def age_one_day(age_array):
+	update_fish = age_array.pop(0)
+	age_array.append(0)
+	age_array[6] += update_fish
+	age_array[8] += update_fish
 
-	def mark(self, number):
-		if number in self.matrix:
-			self.marked[self.matrix.index(number)] = 1
+def main():
+	start_time = time.time()
+	initial_fish = list(map(int, lines[0].split(",")))
+	age_array = [0 for i in range(9)]
+	for fish_age in initial_fish:
+		age_array[fish_age] += 1
+	for i in range(simulate_days):
+		age_one_day(age_array)
 
-	def isWinning(self):
-		rows = [sum(self.marked[i:i+5]) for i in range(0, len(self.marked), 5)]
-		columns = [sum(self.marked[i::5]) for i in range(5)]
-		return (5 in rows or 5 in columns)
+	print(sum(age_array))
+	print("runtime: %s seconds" % (time.time() - start_time))
 
-	def getUnmarkedSum(self):
-		returnSum = 0
-		for i in range(len(self.matrix)):
-			if self.marked[i] == 0:
-				returnSum += self.matrix[i]
-		return returnSum
-
-	def setWinIndex(self, winIndex, lastNumber):
-		self.winIndex = winIndex
-		self.lastNumber	= lastNumber
-
-def getWinningBoard(boards):
-	for i in range(len(numbersToDraw)):
-		for board in boards:
-			board.mark(numbersToDraw[i])
-			if board.isWinning():
-				return (numbersToDraw[i], board)
-
-def getLosingBoard(boards):
-	for i in range(len(numbersToDraw)):
-		for board in boards:
-			if board.winIndex == -1:
-				board.mark(numbersToDraw[i])
-				if board.isWinning():
-					board.setWinIndex(i, numbersToDraw[i])
-	maxBoard = boards[0]
-	for board in boards:
-		if board.winIndex > maxBoard.winIndex:
-			maxBoard = board
-	return (maxBoard.lastNumber, maxBoard)
-
-#real stuff
-
-numbersToDraw = list(map(int, lines[0].split(',')))
-boards = getBoards()
-(lastNumber, winningBoard) = getWinningBoard(boards)
-(lastLosingNumber, losingBoard) = getLosingBoard(boards)
-
-print(f"answer", lastLosingNumber, losingBoard.getUnmarkedSum(), lastLosingNumber*losingBoard.getUnmarkedSum())
+main()
