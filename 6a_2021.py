@@ -1,5 +1,3 @@
-import time
-
 reader = open('6_input.txt')
 lines = []
 try:
@@ -9,7 +7,7 @@ finally:
     reader.close()
 
 #main
-simulate_days = 256
+simulate_days = 80
 
 def age_one_day(age_array):
 	update_fish = age_array.pop(0)
@@ -27,6 +25,5 @@ def main():
 		age_one_day(age_array)
 
 	print(sum(age_array))
-	print("runtime: %s seconds" % (time.time() - start_time))
 
 main()
