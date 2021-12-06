@@ -16,7 +16,6 @@ def age_one_day(age_array):
 	age_array[8] += update_fish
 
 def main():
-	start_time = time.time()
 	initial_fish = list(map(int, lines[0].split(",")))
 	age_array = [0 for i in range(9)]
 	for fish_age in initial_fish:
