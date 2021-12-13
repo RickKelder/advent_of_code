@@ -51,8 +51,9 @@ def main():
 			max_rows = max(int(splitted_spot[1]), max_rows)
 			max_cols = max(int(splitted_spot[0]), max_cols)
 			mark_spots.append(splitted_spot)
-
+	max_rows = max_rows if (max_rows % 2 == 0) else max_rows+1
 	field = [[False for col in range(max_cols+1)] for row in range(max_rows+1)]
+	
 	for mark_spot_line in mark_spots:
 		mark_spot(field, mark_spot_line)
 	for fold_line in folds:
@@ -60,6 +61,7 @@ def main():
 			field = fold_up(field, fold_line)	
 		else:
 			field = fold_left(field, fold_line)
+		print_field(field)
 
 	print(f"answer:")
 	print_field(field)
