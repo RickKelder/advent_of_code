@@ -27,8 +27,6 @@ def swap_polymers(current_polymer, polymer_templates):
 			new_polymer[key] -= current_polymer[key]
 			add_amount(new_polymer, key[0]+new_char, current_polymer[key])
 			add_amount(new_polymer, new_char+key[1], current_polymer[key])
-
-	print(new_polymer)
 	return new_polymer
 
 #main
